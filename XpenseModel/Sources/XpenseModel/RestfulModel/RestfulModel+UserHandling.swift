@@ -34,8 +34,7 @@ extension RestfulModel {
     func sendLoginRequest(_ name: String, password: String) async throws {
         let loginRoute = RestfulModel.baseURL.appendingPathComponent("login")
         guard let basicAuthToken = "\(name):\(password)".data(using: .utf8)?.base64EncodedString() else {
-            self.setServerError(to: .loginFailed)
-            return
+            throw XpenseServiceError.loginFailed
         }
         
         let userToken: User = try await NetworkManager.sendRequest(
