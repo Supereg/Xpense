@@ -186,8 +186,12 @@ public class Model: ObservableObject {
     /// Refreshes the `Accounts` and `Transaction` in the `Model`
     public func refresh() async {
         do {
+            // TODO Task 1.1: Change the synchronous variable binding to an asynchronous one using `async let`
             let accounts = try await loadAccounts()
             let transactions = try await loadTransactions()
+
+            // TODO Task 1.2: `await` the asynchronous binding you introduced above
+            // ...
 
             await MainActor.run {
                 self.accounts = accounts

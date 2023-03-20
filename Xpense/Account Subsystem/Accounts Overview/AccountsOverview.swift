@@ -14,12 +14,16 @@ import XpenseModel
 // MARK: - AccountsOverview
 /// An overview of all `Account`s the Xpense Application
 struct AccountsOverview: View {
+    @EnvironmentObject
+    var model: Model
+
     var body: some View {
         ContentCoordinator(content: content, contentType: .accountLink())
         .tabItem {
             Image(systemName: "rectangle.stack")
             Text("Accounts")
         }
+        // TODO 3.3: Add a task modifier above to call refreshAccounts() on the model
     }
     
     /// Button that is used to add a new `Account`

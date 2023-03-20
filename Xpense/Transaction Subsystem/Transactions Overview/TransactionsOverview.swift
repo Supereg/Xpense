@@ -13,7 +13,8 @@ import XpenseModel
 // MARK: - TransactionsOverview
 /// View displaying all `Transactions` regardless of the account they belong to
 struct TransactionsOverview: View {
-    
+    @EnvironmentObject
+    var model: Model
     
     var body: some View {
         ContentCoordinator(content: content, contentType: .transactionLink())
@@ -21,6 +22,7 @@ struct TransactionsOverview: View {
             Image(systemName: "list.dash")
             Text("Transactions")
         }
+        // TODO 3.4: Add a task modifier above to call refreshTransactions() on the model
     }
     
     @ViewBuilder private func content(path: Binding<[ContentLink]>) -> some View {
