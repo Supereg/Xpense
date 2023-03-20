@@ -33,7 +33,13 @@ struct AccountsOverview: View {
             AccountsGrid(path: path)
                 .padding(.bottom, 16)
         }.backgroundViewModifier()
-        // TODO 3.3: Add a task modifier above to call refreshAccounts() on the model
+            .task {
+                if (model.didInitialAccountsRefresh) {
+                    return
+                }
+
+                await model.refresh()
+            }
     }
 }
 

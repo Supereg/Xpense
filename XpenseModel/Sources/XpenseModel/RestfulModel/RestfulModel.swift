@@ -78,9 +78,6 @@ public class RestfulModel: Model {
         } catch {
             await setServerError(to: .loginFailed)
         }
-
-        // TODO Task 3.1: remove this call to refresh
-        await refresh()
     }
 
     public override func login(_ name: String, password: String) async {
@@ -89,9 +86,6 @@ public class RestfulModel: Model {
         } catch {
             await setServerError(to: .loginFailed)
         }
-
-        // TODO Task 3.2: remove this call to refresh
-        await refresh()
     }
 
     override func loadAccounts() async throws -> [Account] {

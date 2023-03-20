@@ -26,7 +26,13 @@ struct TransactionsOverview: View {
     
     @ViewBuilder private func content(path: Binding<[ContentLink]>) -> some View {
         TransactionsList(path: path)
-        // TODO 3.4: Add a task modifier above to call refreshTransactions() on the model
+            .task {
+                if (model.didInitialTransactionsRefresh) {
+                    return
+                }
+
+                await model.refreshTransactions()
+            }
     }
 }
 

@@ -56,9 +56,16 @@ enum NetworkManager {
     ///   - urlRequest: The `URLRequest
     /// - Returns: The created `Element`
     static func sendRequest<Element: Decodable>(_ urlRequest: URLRequest) async throws -> Element {
-        // TODO 2 Use `withCheckedThrowingContinuation` to write an async wrapper around the sendRequest method below,
-        //  that still takes a completionHandler to call legacy API.
-        fatalError("Task 2 is not implemented yet.")
+        try await withCheckedThrowingContinuation { continuation in
+            sendRequest(urlRequest) { (result: Result<Element, Error>) in
+                switch result {
+                case let .success(element):
+                    continuation.resume(returning: element)
+                case let .failure(error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
     }
 
     static func sendRequest<Element: Decodable>(_ urlRequest: URLRequest, completionHandler: @escaping  (Result<Element, Error>) -> Void) {
