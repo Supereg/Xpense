@@ -21,6 +21,9 @@ public class Model: ObservableObject {
     /// A `XpenseServiceError` that should be displayed to the user in case of an error in relation with the Xpense Server
     @Published public internal(set) var serverError: XpenseServiceError?
 
+    public internal(set) var didInitialAccountsRefresh: Bool = false
+    public internal(set) var didInitialTransactionsRefresh: Bool = false
+
     /// The current total balance of all `Account`s that are stored in the `Model` instance
     public var currentBalance: Transaction.Cent {
         accounts.reduce(0) { $0 + $1.balance(self) }
@@ -63,6 +66,7 @@ public class Model: ObservableObject {
             let accounts = try await loadAccounts()
             await MainActor.run {
                 self.accounts = accounts
+                self.didInitialAccountsRefresh = true
             }
         } catch {
             await setServerError(to: .loadingFailed(Account.self))
@@ -84,6 +88,7 @@ public class Model: ObservableObject {
             let transactions = try await loadTransactions()
             await MainActor.run {
                 self.transactions = transactions
+                self.didInitialTransactionsRefresh = true
             }
         } catch {
             await setServerError(to: .loadingFailed(Transaction.self))
@@ -91,7 +96,7 @@ public class Model: ObservableObject {
     }
 
     func loadTransactions() async throws -> [Transaction] {
-        fatalError("Stub not implemented!")
+        transactions
     }
     
     /// Save a specified `Account`.
@@ -196,6 +201,9 @@ public class Model: ObservableObject {
             await MainActor.run {
                 self.accounts = accounts
                 self.transactions = transactions
+
+                self.didInitialAccountsRefresh = true
+                self.didInitialTransactionsRefresh = true
             }
         } catch {
             await setServerError(to: error as! XpenseServiceError)
