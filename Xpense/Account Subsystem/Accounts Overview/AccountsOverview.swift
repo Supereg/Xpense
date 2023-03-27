@@ -23,7 +23,6 @@ struct AccountsOverview: View {
             Image(systemName: "rectangle.stack")
             Text("Accounts")
         }
-        // TODO 3.3: Add a task modifier above to call refreshAccounts() on the model
     }
     
     /// Button that is used to add a new `Account`
@@ -34,6 +33,7 @@ struct AccountsOverview: View {
             AccountsGrid(path: path)
                 .padding(.bottom, 16)
         }.backgroundViewModifier()
+        // TODO 3.3: Add a task modifier above to call refreshAccounts() on the model
     }
 }
 

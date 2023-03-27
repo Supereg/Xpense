@@ -56,14 +56,26 @@ enum NetworkManager {
     ///   - urlRequest: The `URLRequest
     /// - Returns: The created `Element`
     static func sendRequest<Element: Decodable>(_ urlRequest: URLRequest) async throws -> Element {
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
-        guard
-            let response = response as? HTTPURLResponse,
-            200...299 ~= response.statusCode
-        else {
-            throw URLError(.badServerResponse)
-        }
-        return try decoder.decode(Element.self, from: data)
+        // TODO 2 Use `withCheckedThrowingContinuation` to write an async wrapper around the sendRequest method below,
+        //  that still takes a completionHandler to call legacy API.
+        fatalError("Task 2 is not implemented yet.")
+    }
+
+    static func sendRequest<Element: Decodable>(_ urlRequest: URLRequest, completionHandler: @escaping  (Result<Element, Error>) -> Void) {
+        URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+                guard let response = response as? HTTPURLResponse,
+                      200...299 ~= response.statusCode else {
+                    completionHandler(.failure(URLError(.badServerResponse)))
+                    return
+                }
+
+                do {
+                    let element = try decoder.decode(Element.self, from: data!)
+                    completionHandler(.success(element))
+                } catch {
+                    completionHandler(.failure(error))
+                }
+            }.resume()
     }
     
     /// Gets a single `Element` from a `URL` specified by `route`
@@ -74,7 +86,7 @@ enum NetworkManager {
     static func getElement<Element: Decodable>(on route: URL,
                                                authorization: String? = authorization) async throws -> Element {
         
-        try await sendRequest(urlRequest("GET", url: route, authorization: authorization))
+        try await sendRequestAsync(urlRequest("GET", url: route, authorization: authorization))
     }
     
     /// Gets a list of `Element`s from a `URL` specified by `route`
@@ -96,7 +108,7 @@ enum NetworkManager {
     static func postElement<Element: Codable>(_ element: Element,
                                         authorization: String? = authorization,
                                         on route: URL) async throws -> Element {
-        try await sendRequest(
+        try await sendRequestAsync(
             urlRequest("POST",
                        url: route,
                        authorization: authorization,
@@ -123,9 +135,9 @@ enum NetworkManager {
         )
     }
     
-    /// Deletes a Resource identifed by an `URL` specified by `route`
+    /// Deletes a Resource identified by an `URL` specified by `route`
     /// - Parameters:
-    ///     - route: The route that identifes the resource
+    ///     - route: The route that identifies the resource
     ///     - authorization: The `String` that should written in the `Authorization` header field
     /// - Returns: An `AnyPublisher` that contains indicates of the deletion was successful
     static func delete(at route: URL,
@@ -142,5 +154,22 @@ enum NetworkManager {
             throw URLError(.cannotRemoveFile)
         }
         
+    }
+}
+
+extension NetworkManager {
+    /// Creates a `URLRequest` based on the parameters that has the `Content-Type` header field set to `application/json`
+    /// - Parameters:
+    ///   - urlRequest: The `URLRequest
+    /// - Returns: The created `Element`
+    static func sendRequestAsync<Element: Decodable>(_ urlRequest: URLRequest) async throws -> Element {
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+        guard let response = response as? HTTPURLResponse,
+              200...299 ~= response.statusCode else {
+            throw URLError(.badServerResponse)
+        }
+
+        return try decoder.decode(Element.self, from: data)
     }
 }

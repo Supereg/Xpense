@@ -37,7 +37,7 @@ extension RestfulModel {
             throw XpenseServiceError.loginFailed
         }
         
-        let userToken: User = try await NetworkManager.sendRequest(
+        let userToken: User = try await NetworkManager.sendRequestAsync(
             NetworkManager.urlRequest("POST",
                        url: loginRoute,
                        authorization: "Basic \(basicAuthToken)"
