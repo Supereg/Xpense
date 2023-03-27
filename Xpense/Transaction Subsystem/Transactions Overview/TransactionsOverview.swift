@@ -15,7 +15,7 @@ import XpenseModel
 struct TransactionsOverview: View {
     @EnvironmentObject
     var model: Model
-    
+
     var body: some View {
         ContentCoordinator(content: content, contentType: .transactionLink())
         .tabItem {
