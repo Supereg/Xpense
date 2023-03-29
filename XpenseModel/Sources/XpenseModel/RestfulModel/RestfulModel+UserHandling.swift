@@ -18,6 +18,7 @@ extension RestfulModel {
     ///   - name: The name that should be used to sign in
     ///   - password: The password that should be used to sign in
     /// - Returns: An `AnyPublisher` that finishes once the sign in resonse arrived and the response was handled
+    @objc
     func sendSignUpRequest(_ name: String, password: String) async throws {
         let usersRoute = RestfulModel.baseURL.appendingPathComponent("users")
         _ = try await NetworkManager.postElement(
@@ -31,6 +32,7 @@ extension RestfulModel {
     ///   - name: The name that should be used to login
     ///   - password: The password that should be used to login
     /// - Returns: An `AnyPublisher` that finishes once the login resonse arrived and the response was handled
+    @objc
     func sendLoginRequest(_ name: String, password: String) async throws {
         let loginRoute = RestfulModel.baseURL.appendingPathComponent("login")
         guard let basicAuthToken = "\(name):\(password)".data(using: .utf8)?.base64EncodedString() else {
