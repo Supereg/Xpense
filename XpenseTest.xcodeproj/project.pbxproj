@@ -9,18 +9,19 @@
 /* Begin PBXBuildFile section */
 		4F44754B26BD9016004E6064 /* XpenseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F44754A26BD9016004E6064 /* XpenseTest.swift */; };
 		4F44755626BD9016004E6064 /* XpenseUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F44755526BD9016004E6064 /* XpenseUITest.swift */; };
+		5F5943FD29D3977600322BCA /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 5F5943FC29D3977600322BCA /* ViewInspector */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4F44754626BD9016004E6064 /* XpenseTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "XpenseTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4F44754A26BD9016004E6064 /* XpenseTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XpenseTest.swift"; sourceTree = "<group>"; };
+		4F44754A26BD9016004E6064 /* XpenseTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XpenseTest.swift; sourceTree = "<group>"; };
 		4F44754C26BD9016004E6064 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4F44755126BD9016004E6064 /* XpenseUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "XpenseUITest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4F44755526BD9016004E6064 /* XpenseUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XpenseUITest.swift"; sourceTree = "<group>"; };
+		4F44755526BD9016004E6064 /* XpenseUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XpenseUITest.swift; sourceTree = "<group>"; };
 		4F44755726BD9016004E6064 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5E88C3E226C15952006E704E /* Xpense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = "Xpense.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E88C3E226C15952006E704E /* Xpense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Xpense.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E88C3E426C15B2D006E704E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		5EAADF4C26BDBE3B0037A6DA /* Xpense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = "Xpense.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EAADF4C26BDBE3B0037A6DA /* Xpense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Xpense.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F1F582729D1FB9300515D20 /* XpenseTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = XpenseTest.xctest; path = "/Users/julianostarek/Documents/University/iPraktikum/Tutor/Xpense-T2/build/Debug-iphoneos/XpenseTest.xctest"; sourceTree = "<absolute>"; };
+		5F5943F829D1FE5200322BCA /* XpenseUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = XpenseUITest.xctest; path = "/Users/julianostarek/Documents/University/iPraktikum/Tutor/Xpense-T2/build/Debug-iphoneos/XpenseUITest.xctest"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F5943FD29D3977600322BCA /* ViewInspector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,18 +48,8 @@
 			children = (
 				4F44754926BD9016004E6064 /* XpenseTest */,
 				4F44755426BD9016004E6064 /* XpenseUITest */,
-				4F44753626BD9013004E6064 /* Products */,
 				5EAADF4B26BDBE3B0037A6DA /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		4F44753626BD9013004E6064 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				4F44754626BD9016004E6064 /* XpenseTest.xctest */,
-				4F44755126BD9016004E6064 /* XpenseUITest.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		4F44754926BD9016004E6064 /* XpenseTest */ = {
@@ -66,7 +58,7 @@
 				4F44754A26BD9016004E6064 /* XpenseTest.swift */,
 				4F44754C26BD9016004E6064 /* Info.plist */,
 			);
-			path = "XpenseTest";
+			path = XpenseTest;
 			sourceTree = "<group>";
 		};
 		4F44755426BD9016004E6064 /* XpenseUITest */ = {
@@ -75,7 +67,7 @@
 				4F44755526BD9016004E6064 /* XpenseUITest.swift */,
 				4F44755726BD9016004E6064 /* Info.plist */,
 			);
-			path = "XpenseUITest";
+			path = XpenseUITest;
 			sourceTree = "<group>";
 		};
 		5EAADF4B26BDBE3B0037A6DA /* Frameworks */ = {
@@ -104,9 +96,12 @@
 			);
 			dependencies = (
 			);
-			name = "XpenseTest";
+			name = XpenseTest;
+			packageProductDependencies = (
+				5F5943FC29D3977600322BCA /* ViewInspector */,
+			);
 			productName = XpenseTestTests;
-			productReference = 4F44754626BD9016004E6064 /* XpenseTest.xctest */;
+			productReference = 5F1F582729D1FB9300515D20 /* XpenseTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		4F44755026BD9016004E6064 /* XpenseUITest */ = {
@@ -121,9 +116,9 @@
 			);
 			dependencies = (
 			);
-			name = "XpenseUITest";
+			name = XpenseUITest;
 			productName = XpenseTestUITests;
-			productReference = 4F44755126BD9016004E6064 /* XpenseUITest.xctest */;
+			productReference = 5F5943F829D1FE5200322BCA /* XpenseUITest.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -154,7 +149,10 @@
 				Base,
 			);
 			mainGroup = 4F44752C26BD9013004E6064;
-			productRefGroup = 4F44753626BD9013004E6064 /* Products */;
+			packageReferences = (
+				5F5943FB29D3977600322BCA /* XCRemoteSwiftPackageReference "ViewInspector" */,
+			);
+			productRefGroup = 4F44752C26BD9013004E6064;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -272,7 +270,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -327,7 +325,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -341,8 +339,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = "XpenseTest/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				INFOPLIST_FILE = XpenseTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -361,8 +359,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = "XpenseTest/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				INFOPLIST_FILE = XpenseTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -382,7 +380,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = "XpenseUITest/Info.plist";
+				INFOPLIST_FILE = XpenseUITest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -401,7 +399,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = "XpenseUITest/Info.plist";
+				INFOPLIST_FILE = XpenseUITest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -446,6 +444,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5F5943FB29D3977600322BCA /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nalexn/ViewInspector";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5F5943FC29D3977600322BCA /* ViewInspector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5F5943FB29D3977600322BCA /* XCRemoteSwiftPackageReference "ViewInspector" */;
+			productName = ViewInspector;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4F44752D26BD9013004E6064 /* Project object */;
 }

@@ -4,134 +4,198 @@
 //
 
 import XCTest
+import ViewInspector
+import SwiftUI
 @testable import Xpense
+@testable import XpenseModel
 
 class XpenseTest: XCTestCase {
-    private var unsortedDates: [Date]!
-    private var sortedDates: [Date]!
-
+    
     override func setUp() {
         super.setUp()
-
-        // Create a sorted array of random dates
-        self.sortedDates = createOrderedDatesList(11)
-
-        // Shuffle the above created dates to created an array of unsorted dates for testing
-        self.unsortedDates = self.sortedDates.shuffled()
     }
-
-    func testAttributesForContext() {
-        let context = Context()
-        let mirror = Mirror(reflecting: context)
-        var dates = true
-        var sortAlgorithm = true
-        for child in mirror.children {
-            if child.label == "dates" {
-                dates = false
+    
+    func testRefresh() async {
+        let loadAccountsCalled = expectation(description: "loadAccounts() runs immediately")
+        let loadTransactionsCalled = expectation(description: "loadTransactions() runs immediately")
+        
+        let model = Model_RefreshMock(
+            loadAccounts: {
+                loadAccountsCalled.fulfill()
+                try? await Task.sleep(nanoseconds: 100_000_000)
+                return []
+            },
+            loadTransactions: {
+                loadTransactionsCalled.fulfill()
+                try? await Task.sleep(nanoseconds: 100_000_000)
+                return []
+            },
+            refresh: {},
+            refreshTransactions: {}
+        )
+        
+        async let refresh: () = model.refresh()
+        
+        let _ = XCTWaiter.wait(
+            for: [loadAccountsCalled, loadTransactionsCalled],
+            timeout: 5 / 100
+        )
+        
+        await refresh
+    }
+    
+    func testRefreshCallsRemoved() async {
+        let refreshCalled = expectation(description: "refresh() is not called by signUp() nor login()")
+        refreshCalled.isInverted = true
+        
+        let restfulModel = RestfulModel_SignUpLoginMock(
+            refresh: {
+                refreshCalled.fulfill()
             }
-            if child.label == "sortAlgorithm" {
-                sortAlgorithm = false
+        )
+        
+        await restfulModel.signUp("", password: "")
+        await restfulModel.login("", password: "")
+    
+        await waitForExpectations(timeout: 0)
+    }
+    
+    func testSendRequest() async {
+        let successRequest = NetworkManager.urlRequest("GET", url: URL(string: "https://dummyjson.com/products/1")!)
+        let failureRequest = NetworkManager.urlRequest("GET", url: URL(string: "https://googlee.de")!)
+        
+        do {
+            let _: String = try await NetworkManager.sendRequestAsync(successRequest)
+        } catch DecodingError.typeMismatch {
+            // nop
+        } catch {
+            XCTFail("Request should have succeeded but failed \(error)")
+        }
+        
+        do {
+            let _: String = try await NetworkManager.sendRequestAsync(failureRequest)
+            XCTFail("Request should have failed but didn't")
+        } catch DecodingError.typeMismatch {
+            XCTFail("Request should have failed but didn't")
+        } catch {
+            // nop
+        }
+    }
+    
+    @MainActor
+    func testAccountsOverview() async {
+        var callsToRefresh = 0
+        
+        let model = Model_RefreshMock(
+            loadAccounts: { return [] },
+            loadTransactions: { return [] },
+            refresh: {
+                callsToRefresh += 1
+            },
+            refreshTransactions: {}
+        )
+        
+        var sut = AccountsOverview()
+            .environmentObject(model as Model)
+        
+        ViewHosting.host(view: sut)
+        ViewHosting.host(view: sut)
+        
+        try? await Task.sleep(for: Duration.milliseconds(500))
+        
+        if callsToRefresh == 0 {
+            XCTFail("Initial refresh not called by AccountsOverview")
+        } else if callsToRefresh > 1 {
+            XCTFail("Multiple calls to refresh by AccountsOverview")
+        }
+    }
+    
+    @MainActor
+    func testTransactionsOverview() async {
+        var callsToRefreshTransactions = 0
+        
+        let model = Model_RefreshMock(
+            loadAccounts: { return [] },
+            loadTransactions: { return [] },
+            refresh: {},
+            refreshTransactions: {
+                callsToRefreshTransactions += 1
             }
-        }
-        if dates {
-            XCTFail("Attribute 'dates' of Context.swift is not implemented!")
-        }
-        if sortAlgorithm {
-            XCTFail("Attribute 'sortAlgorithm' of Context.swift is not implemented!")
-        }
-    }
-
-    func testAttributesForPolicy() {
-        let policy = Policy(Context())
-        let mirror = Mirror(reflecting: policy)
-        var context = true
-        for child in mirror.children {
-            if child.label == "context" {
-                context = false
-            }
-        }
-        if context {
-            XCTFail("Attribute 'context' of Policy.swift is not implemented!")
+        )
+        
+        let sut = await TransactionsOverview()
+            .environmentObject(model as Model)
+        
+        ViewHosting.host(view: sut)
+        ViewHosting.host(view: sut)
+        
+        try? await Task.sleep(for: Duration.milliseconds(500))
+        
+        if callsToRefreshTransactions == 0 {
+            XCTFail("Initial refreshTransactions() not called by TransactionsOverview")
+        } else if callsToRefreshTransactions > 1 {
+            XCTFail("Multiple calls to refreshTransactions() by TransactionsOverview")
         }
     }
+}
 
-    func testBubbleSort() {
-        let bubbleSort = BubbleSort()
-        let sortedInput = bubbleSort.performSort(unsortedDates)
-
-        XCTAssertEqual(sortedInput, sortedDates, "BubbleSort does not sort correctly.")
+class Model_RefreshMock: Model {
+    let loadAccounts: () async -> [Account]
+    let loadTransactions: () async -> [XpenseModel.Transaction]
+    let refresh: () async -> Void
+    let refreshTransactions: () async -> Void
+    
+    init(
+        loadAccounts: @escaping () async -> [Account],
+        loadTransactions: @escaping () async -> [XpenseModel.Transaction],
+        refresh: @escaping () async -> Void,
+        refreshTransactions: @escaping () async -> Void
+    ) {
+        self.loadAccounts = loadAccounts
+        self.loadTransactions = loadTransactions
+        self.refresh = refresh
+        self.refreshTransactions = refreshTransactions
     }
-
-    func testMergeSort() {
-        let mergeSort = MergeSort()
-        let sortedInput = mergeSort.performSort(unsortedDates)
-
-        XCTAssertEqual(sortedInput, sortedDates, "MergeSort does not sort correctly.")
+    
+    override func loadAccounts() async throws -> [Account] {
+        await loadAccounts()
     }
-
-    func testContextMergeSort() {
-        let context = Context()
-        context.setDates(unsortedDates)
-        context.setSortAlgorithm(MergeSort())
-        context.sort()
-
-        XCTAssertEqual(context.getDates(), sortedDates, "MergeSort does not sort correctly.")
+    
+    override func loadTransactions() async throws -> [XpenseModel.Transaction] {
+        await loadTransactions()
     }
-
-    func testContextBubbleSort() {
-        let context = Context()
-        context.setDates(unsortedDates)
-        context.setSortAlgorithm(BubbleSort())
-        context.sort()
-
-        XCTAssertEqual(context.getDates(), sortedDates, "BubbleSort does not sort correctly.")
+    
+    override func refresh() async {
+        self.didInitialAccountsRefresh = true
+        await refresh()
     }
-
-    func testPolicy() {
-        let context = Context()
-        let policy = Policy(context)
-        policy.configure(sortAlgorithm: SortAlgorithm.MergeSort)
-
-        XCTAssertEqual("Xpense.MergeSort", String(describing: context.getSortAlgorithm()), "The Policy does not configure the Sorting Algorithm correctly!")
-
-        policy.configure(sortAlgorithm: SortAlgorithm.BubbleSort)
-
-        XCTAssertEqual("Xpense.BubbleSort", String(describing: context.getSortAlgorithm()), "The Policy does not configure the Sorting Algorithm correctly!")
+    
+    override func refreshTransactions() async {
+        self.didInitialTransactionsRefresh = true
+        await refreshTransactions()
     }
+}
 
-    func testMainViewLogic() {
-        let mainView = MainView()
-
-        XCTAssertEqual(mainView.sortAlgorithm, SortAlgorithm.MergeSort, "The default sorting algorithm should be Merge Sort!")
-        Policy(mainView.context).configure(sortAlgorithm: mainView.sortAlgorithm)
-
-        XCTAssertEqual("Xpense.MergeSort", String(describing: mainView.context.getSortAlgorithm()), "The sorting algorithm was not set correctly!")
+class RestfulModel_SignUpLoginMock: RestfulModel {
+    let refresh: () async -> Void
+    
+    init(
+        refresh: @escaping () async -> Void
+    ) {
+        self.refresh = refresh
     }
-
-    func testMainViewContextSort() {
-        let mainView = MainView()
-        mainView.context.setDates(unsortedDates)
-
-        XCTAssertEqual(mainView.context.getDates(), unsortedDates, "The dates in the context were not set correctly!")
-
-        mainView.context.setSortAlgorithm(MergeSort())
-        mainView.context.sort()
-
-        XCTAssertEqual(mainView.context.getDates(), sortedDates, "The dates in the context were not sorted correctly!")
+    
+    @objc
+    override func sendSignUpRequest(_ name: String, password: String) async throws {
+        // nop
     }
-
-    private func createOrderedDatesList(_ amount: Int) -> [Date] {
-        var list = [Date]()
-        let dateFormat = DateFormatter()
-        dateFormat.dateFormat = "dd.MM.yyyy"
-        dateFormat.timeZone = TimeZone(identifier: "UTC")
-        var orderedSeconds: Double = 0.00
-        for _ in 0 ..< amount {
-            /// create random dates in an ascending order
-            orderedSeconds += Double.random(in: 1000000...1000000000)
-            let orderedDate: Date! = Date(timeIntervalSince1970: orderedSeconds)
-            list.append(orderedDate)
-        }
-        return list
+    
+    @objc
+    override func sendLoginRequest(_ name: String, password: String) async throws {
+        // nop
+    }
+    
+    override func refresh() async {
+        await refresh()
     }
 }

@@ -17,7 +17,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4F44754526BD9016004E6064"
-               BuildableName = "Test.xctest"
+               BuildableName = "XpenseTest.xctest"
                BlueprintName = "XpenseTest"
                ReferencedContainer = "container:XpenseTest.xcodeproj">
             </BuildableReference>
@@ -38,7 +38,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4F4474F426BD8F87004E6064"
+            BlueprintIdentifier = "21558D9429B891A80033C01F"
             BuildableName = "Xpense.app"
             BlueprintName = "Xpense"
             ReferencedContainer = "container:assignment/Xpense.xcodeproj">
@@ -54,7 +54,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4F4474F426BD8F87004E6064"
+            BlueprintIdentifier = "21558D9429B891A80033C01F"
             BuildableName = "Xpense.app"
             BlueprintName = "Xpense"
             ReferencedContainer = "container:assignment/Xpense.xcodeproj">
