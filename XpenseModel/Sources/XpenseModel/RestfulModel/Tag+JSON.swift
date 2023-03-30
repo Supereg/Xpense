@@ -8,12 +8,12 @@ import Foundation
 // MARK: Tag + JSON
 extension Tag {
     public static func encodeJSON(from tags: [Tag]) throws -> Data {
-        // TODO 3.1 Use a `JSONEncoder` to encode the provided tags array
-        Data()
+        let encoder = JSONEncoder()
+        return try encoder.encode(tags)
     }
 
     public static func decodeJSON(from data: Data) throws -> [Tag] {
-        // TODO 3.2 Use a `JSONDecoder` to decode the provided Data into a Tag array
-        []
+        let decoder = JSONDecoder()
+        return try decoder.decode([Tag].self, from: data)
     }
 }

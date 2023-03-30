@@ -85,7 +85,7 @@ public struct Transaction {
     /// The `Account` this `Transaction` is linked to
     public var account: UUID
 
-    // TODO 1.2: Add the `tags` property
+    public var tags: [Tag]?
     
     /// Converts this `Transaction`'s amount into a textual representation
     public var amountDescription: String {

@@ -5,10 +5,20 @@
 
 import Foundation
 
-public struct Tag {
-    // TODO 1.1: Implement the Tag type as shown in the UML diagram. Make it conform to `Codable`.
+public struct Tag: Codable {
+    public let id: UUID
+    public var name: String
+    public var color: String
 
-    // TODO 2: Implement the updated Tag type. Add the nested CodingKeys definition.
+    public var icon: URL?
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case color
+
+        case icon = "icon_url"
+    }
 }
 
 // MARK: Tag + Hashable, Equatable
