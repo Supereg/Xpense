@@ -84,7 +84,8 @@ public struct Transaction {
     public var location: Coordinate?
     /// The `Account` this `Transaction` is linked to
     public var account: UUID
-    
+
+    // TODO 1.2: Add the `tags` property
     
     /// Converts this `Transaction`'s amount into a textual representation
     public var amountDescription: String {
